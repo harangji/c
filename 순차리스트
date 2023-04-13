@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// 어떤 함수 안에 있지 않고 바깥에서 선언한 변수, 배열은 모든 함수들이 공동으로 할 수
+// 있는 것이 되는데, 이를 외부 변수라고 한다.
+// 아래 fruits, prices 배열과 count 변수는 외부 변수이다.
+char fruits[10][20]; // 최대 10개 과일 이름 보관할 2차원 배열
+int prices[10]; // 최대 10개 과일의 가격 정보를 보관할 1차원 배열
+int count = 0; // 현재 리스트에 보관된 과일 정보 개수, 초기에는 0이다.
+
+void add(char f[], int p) // 리스트에 과일 삽입 함수
+{
+int i, j, position;
+
+if(count == 10)
+printf("10개 과일이 이미 등록되어, 더이상 과일 등록을 할 수 없습니다.\n");
+else // 새로 등록할 수 있다.
+{
+for(i = 0; i < count; i++) // 새로 등록할 과일 위치를 찾는다.
+{
+if(strcmp(f, fruits[i]) > 0) // 현재 i 위치보다 더 뒤에 삽입해야 한다.
+continue; // 다음 요소와 비교를 위해 새로운 반복 시작
+else
+break; // 현재 i 위치가 삽입 위치이다.
+}
+position = i; // break에 의해 반복을 끝냈거나, 맨 마지막이 삽입 위치이다.
+for(j = count; j > position; j--) // 삽입될 과일 위치부터 한 칸 뒤로 옮기는 작업
+{
+strcpy(fruits[j], fruits[j-1]);
+prices[j] = prices[j-1];
+}
+// 새로 과일 등록 작업
+strcpy(fruits[position], f); // 새로 과일 등록
+prices[position] = p;
+count = count + 1;
+}
+}
+
+void del(char f[]) // 리스트에서 과일 삭제 함수
+{
+int i, j, position;
+for(i = 0; i < count; i++) // 삭제할 과일 위치 찾기
+{
+if(strcmp(f, fruits[i]) == 0) // 과일 위치 찾은 경우,
+break; // 현재 i 위치가 삭제할 과일 위치이다.
+else
+continue;
+}
+position = i; // break에 의해 반복을 끝냈으면, 현재 i 위치가 삭제할 과일 위치이고,
+//반복을 다 돌았으면 삭제할 과일이 없는 경우이다.
+if(position == count)
+printf("\n삭제할 과일이 등록되어 있지 않습니다.\n");
+else
+{
+for(j = position; j < count; j++) // 삭제할 과일들 뒤의 과일들 한 칸씩 앞으로 옮기는 작업
+{
+strcpy(fruits[j], fruits[j+1]);
+prices[j] = prices[j+1];
+}
+count = count - 1;
+}
+}
+
+void prn() // 현재 등록되어 있는 과일 전체 출력하기
+{
+int i;
+
+if(count == 0)
+{
+printf("\n----- 현재 등록된 과일이 없습니다. -----\n\n");
+return;
+}
+printf("\n----- 현재 등록된 과일은 아래와 같습니다. -----\n\n");
+for(i = 0; i < count; i++)
+printf("%2d번째 과일 : %10s - 가격 %4d\n\n", i+1, fruits[i], prices[i]);
+printf("-----------------------------------------------\n\n");
+}
+
+int main()
+{
+int choice;
+char name[20]; // 삽일할 과일 이름 입력받는 용도
+int p; // 삽입할 과일 가격 입력받는 용도
+int i;
+
+for(i=0; i < 10; i++) // 과일 이름 배열 초기화
+strcpy(fruits[i], "");
+
+printf("현재는 등록된 과일이 없습니다.\n");
+
+do
+{
+choice=0;
+printf("원하는 작업 선택 : 1-삽입, 2-삭제, 3-리스트 내용 출력, 4-프로그램 끝내기 : ");
+scanf("%d", &choice);
+switch(choice)
+{
+case 1 :
+printf("\n삽입할 과일 이름을 입력하세요 : ");
+scanf("%s", name);
+printf("삽입할 과일의 가격을 입력하세요 : ");
+scanf("%d", &p);
+getchar();
+add(name, p); // 삽입 함수 호출
+if(count != 10)
+prn(); // 현재 리스트 내용 전체 출력하기
+break;
+case 2:
+printf("삭제할 과일 이름을 입력하세요 : ");
+scanf("%s", name);
+del(name);
+prn(); // 현재 리스트 내용 전체 출력하기
+break;
+case 3:
+prn(); // 현재 리스트 내용 전체 출력하기
+break;
+case 4:
+default:
+printf("프로그램이 끝났습니다.\n");
+exit(0);
+}
+} while(1); // 무한 반복
+return 0;
+}
