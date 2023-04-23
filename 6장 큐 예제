@@ -1,0 +1,304 @@
+1) 배열을 이용한 정적 구현의 큐프로그램
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 10 // 큐의 크기
+
+char queue[MAX]; // 큐
+int front = -1; // 큐에서 가장 마지막에 삭제한 자료 위치
+int rear = -1; // 큐에서 가장 최근에 삽입한 자료 위치
+
+void enqueue(char t) // 큐에 삽입 함수
+{
+if(rear == (MAX -1)) // 큐가 다 찼다! 삽입할 수 없음.
+{
+printf("\n 큐가 꽉 찼습니다.\n");
+return;
+}
+else
+queue[++rear] = t; // 큐에 보관
+}
+
+char dequeue() // 큐에서 삭제 함수
+{
+if(front == rear) // 큐가 비어 있다.
+return '@'; // 스택이 비어 있으면 '@'를 리턴하는 것으로 함.
+else
+return (queue[++front]); // 큐에서 1개 자료 삭제
+}
+
+void prn()
+{
+int i;
+
+printf("\n ----------------현재 큐의 모습------------------\n");
+printf(" ");
+for(i=0; i < MAX; i++)
+printf("[%d] ", i);
+printf("\n");
+printf(" ");
+for(i=0; i <= front; i++)
+printf("%4c", ' ');
+for(i=front+1; i<=rear; i++)
+printf("%4c", queue[i]);
+printf("\n --------front=%d-------------------rear=%d-------\n",front, rear);
+}
+
+void main()
+{
+int choice;
+char data; // 삽입할 자료 이름(A, B, C, ... 등
+char result; // // 삭제한 자료 보관용
+
+printf(" ------- front=%d 현재는 큐에 자료가 없습니다.---rear=%d------\n", front, rear);
+
+do
+{
+choice = 0;
+printf("\n\n원하는 작업 선택 : 1-enQ(삽입), 2-deQ(삭제), 3-큐출력, 4-프로그램 끝내기 : ");
+scanf("%d", &choice);
+getchar();
+switch(choice)
+{
+case 1:
+printf("\n삽입할 문자를 입력하세요 : ");
+scanf("%c", &data);
+getchar();
+enqueue(data); // 삽입 함수 호출
+prn(); // 현재 리스트 내용 전체 출력하기
+break;
+case 2:
+result = dequeue(); // 삭제 함수 호출
+if(result != 'Q') // 큐에서 정상적으로 삭제한 경우
+printf("\n삭제된 자료는 %c 입니다.\n", result);
+else
+printf("\n큐가 비어 있습니다.\n"); // 큐가 비어 있으면 '@'를 리턴하는 것으로 약속.
+prn(); // 현재 큐 내용 전체 출력하기
+break;
+case 3:
+prn(); // 현재 큐 내용 전체 출력하기
+break;
+case 4:
+default:
+printf("프로그램이 끝났습니다.\n");
+exit(0);
+}
+} while(1); // 무한반복
+}
+
+2) 원형 큐 프로그램
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 10 // 큐의 크기
+
+char queue[MAX]; // 큐
+int front = 0; // 큐에서 가장 마지막에 삭제한 자료 위치
+int rear = 0; // 큐에서 가장 최근에 삽입한 자료 위치
+
+void enqueue(char t) // 큐에 삽입 함수
+{
+if((rear+1)%MAX == front) // 큐가 다 찼다! 삽입할 수 없음.
+{
+printf("\n 큐가 꽉 찼습니다.\n");
+return;
+}
+else
+{
+rear = (rear+1)%MAX;
+queue[rear] = t; // 큐에 보관
+}
+}
+
+char dequeue() // 큐에서 삭제 함수
+{
+char r;
+if(front == rear) // 큐가 비어 있다.
+return '@'; // 스택이 비어 있으면 '@'를 리턴하는 것으로 함.
+else
+{
+front = (front+1)%MAX;
+r = queue[front];
+queue[front] = ' '; // 삭제한 내용을 공백으로 만들어 줌.
+return (r);
+}
+}
+
+void prn()
+{
+int i;
+
+printf("\n ----------------현재 큐의 모습------------------\n");
+printf(" ");
+for(i=0; i < MAX; i++)
+printf("[%d] ", i);
+printf("\n");
+printf(" ");
+for(i=0; i <MAX; i++)
+printf("%4c", queue[i]);
+printf("\n --------front=%d-------------------rear=%d-------\n",front, rear);
+}
+
+void main()
+{
+int choice;
+char data; // 삽입할 자료 이름(A, B, C, ... 등
+char result; // // 삭제한 자료 보관용
+
+printf(" ------- front=%d 현재는 큐에 자료가 없습니다.---rear=%d------\n", front, rear);
+
+do
+{
+choice = 0;
+printf("\n\n원하는 작업 선택 : 1-enQ(삽입), 2-deQ(삭제), 3-큐출력, 4-프로그램 끝내기 : ");
+scanf("%d", &choice);
+getchar();
+switch(choice)
+{
+case 1:
+printf("\n삽입할 문자를 입력하세요 : ");
+scanf("%c", &data);
+getchar();
+enqueue(data); // 삽입 함수 호출
+prn(); // 현재 리스트 내용 전체 출력하기
+break;
+case 2:
+result = dequeue(); // 삭제 함수 호출
+if(result != 'Q') // 큐에서 정상적으로 삭제한 경우
+printf("\n삭제된 자료는 %c 입니다.\n", result);
+else
+printf("\n큐가 비어 있습니다.\n"); // 큐가 비어 있으면 '@'를 리턴하는 것으로 약속.
+prn(); // 현재 큐 내용 전체 출력하기
+break;
+case 3:
+prn(); // 현재 큐 내용 전체 출력하기
+break;
+case 4:
+default:
+printf("프로그램이 끝났습니다.\n");
+exit(0);
+}
+} while(1); // 무한반복
+}
+
+3) 연결리스트를 응용하는 동적 구현의 큐 프로그램
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// 아래 구조체 정의는 외부 변수와 똑같이 모든 함수에서 사용할 수 있는
+// 구조체 정의이다.
+struct Node // 큐를 형성할 노드 정의
+{
+char val; // 큐에 보관할 값(문자 1개
+struct Node *next; // 자기 참조 포인터
+};
+
+struct Node q; // 빈 큐 정의
+int count = 0; // 현재 리스트에 보관된 정보 개수, 초기에는 0이다.
+
+struct Node *getnode() // 새로운 노드 공간을 동작할당으로 확보해 주는 함수
+{ // 동적으로 할당한 노드의 시작 주소를 반환해 준다.
+struct Node *p;
+p = (struct Node*)malloc(sizeof(struct Node));
+return(p);
+}
+
+void retnode(struct Node* ptr)
+{
+free(ptr); // 동적 할당 반환
+}
+
+void enqueue(char item) // 리스트에 과일 삽입 함수
+{
+struct Node *ptr; // 새로 할당받을 동적 노드 주소를 보관할 구조체 포인터
+// 맨 앞에 새로운 노드를 삽입함.
+ptr = getnode(); // 빈 노드 동적할당 받음
+ptr->val = item; // 노드에 등록할 문자 저장함.
+ptr->next = q.next; // 링크 조정 작업
+q.next = ptr;
+count = count + 1;
+}
+
+char dequeue() // 리스트에서 과일 삭제 함수
+{
+int i;
+struct Node *current, *previous; // 작업용 포인터
+current = q.next;
+previous = &q;
+
+if(q.next == NULL) // 큐가 비어 있음
+{
+printf("큐가 비어 있습니다.");
+return('@');
+}
+else // 큐가 비어 있지 않은 경우
+{
+for(i=1;i<count;i++)
+{
+previous = current;
+current = current->next;
+}
+}
+previous->next = NULL;
+retnode(current); // 노드 반환
+count = count - 1;
+}
+
+void prn() // 현재 등록되어 있는 자료 전체 출력하기
+{
+int i;
+struct Node *current = q.next;
+if(count == 0)
+{
+printf("\n----- 현재 큐가 비어 있습니다.. -----\n\n");
+return;
+}
+printf("\n----- 현재 큐의 내용은 아래와 같습니다. -----\n\n");
+for(i = 0; i < count; i++)
+{
+printf("%c ", current->val);
+current = current->next;
+}
+printf("\n-----------------------------------------------\n\n");
+}
+
+void main()
+{
+int choice;
+char item; // 삽일할 자료 입력받는 용도
+int i;
+
+q.next = NULL; // 최초 빈 리스트를 만듬
+printf("현재는 등록된 자료가 없습니다.\n");
+
+do
+{
+choice = 0;
+printf("원하는 작업 선택 : 1-삽입, 2-삭제, 3-큐 내용 출력, 4-프로그램 끝내기 : ");
+scanf("%d", &choice);
+getchar();
+switch(choice)
+{
+case 1 :
+printf("\n삽입할 자료(문자 1개) 입력하세요 : ");
+scanf("%c", &item);
+getchar();
+enqueue(item); // 삽입 함수 호출
+prn(); // 현재 리스트 내용 전체 출력하기
+break;
+case 2:
+dequeue();
+prn(); // 현재 리스트 내용 전체 출력하기
+break;
+case 3:
+prn(); // 현재 리스트 내용 전체 출력하기
+break;
+case 4:
+default:
+printf("프로그램이 끝났습니다.\n");
+exit(0);
+}
+} while(1); // 무한반복
+}
