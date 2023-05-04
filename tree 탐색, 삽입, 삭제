@@ -40,24 +40,24 @@ free(ptr); // 동적 할당 반환
 struct Node* bbsearch(int data) // 트리에서 특정값 노드가 있는지 탐색하는 함수
 {
 // p는 현재 탐색하려는 노드 가리키는 포인터, parent는 그 이전 부모 노드
-struct Node *p = tree.right; // 트리 출발점에서부터 출발
+struct Node *p = tree.right; // 트리 출발점에서부터 출발, 무슨말이냐면... 그냥 맨 밑 재귀함수 호출이니 크게 신경쓰지 말것
 parent = &tree;
 leftright = -1;
 while(p != NULL)
 {
-if(data < p->value)
+if(data < p->value) // 입력된 값이 P(부모) 보다 작다면, 왼쪽으로 이동
 {
 parent = p;
 p = p->left;
 leftright = 0;
 }
-else if(data > p->value)
+else if(data > p->value) // 크다면, 오른쪽으로 이동
 {
 parent = p;
 p = p->right;
 leftright = 1;
 }
-else // 찾은 경우, 노드포인터 반환
+else // 찾은 경우, 노드포인터 반환 , 무슨말이냐면...더이상 찾을 노드가 존재하지 않을 때가 찾는 위치임
 return (p);
 }
 return (p); // 못찾은 경우, NULL 반환
@@ -68,7 +68,7 @@ void insert(int data) // 트리에 노드 삽입 함수
 struct Node *p; // 작업용
 struct Node *newnode;
 p = bbsearch(data); // 이미 트리에 존재하는지 검사
-if(p != NULL) // 이미 존재
+if(p != NULL) // 이미 존재, 
 printf("%d는(은) 이미 트리에 보관되어 있습니다.\n", data);
 else // 삽입해야 함
 {
