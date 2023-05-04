@@ -23,7 +23,7 @@ struct Node *parent; // 탐색 시 현 탐색 노드의 parent를 가리키는 �
 struct Node *current; // 현재 탐색 노드
 struct Node *lchild, *rchild; // 현재 탐색 노드의 왼쪽, 오른쪽 자식
 struct Node *l, *r; // 현재 탐색 노드가 부모 노드의 왼쪽 자식인지 오른쪽 자식인지 표시
-int leftright;
+int leftright; // 탐색 함수에서 왼쪽인지 오른쪽인지를 판별하는 변수
 
 struct Node *getnode() // 새로운 노드 공간을 동작할당으로 확보해 주는 함수
 { // 동적으로 할당한 노드의 시작 주소를 반환해 준다.
